@@ -2,9 +2,6 @@ from board import Game
 from agent import Agent
 from humanAgent import HumanAgent
 from randomAgent import RandomAgent
-
-from multiprocessing import Process
-
 from MCTS import *
 from NeuralNetwork import Connect4Zero
 
