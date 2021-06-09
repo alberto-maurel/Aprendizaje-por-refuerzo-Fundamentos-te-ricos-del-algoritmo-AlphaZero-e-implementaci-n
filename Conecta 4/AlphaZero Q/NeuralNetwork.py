@@ -2,7 +2,7 @@ import tensorflow as tf
 
 NUM_RES_BLOCKS = 4
 
-#Neural network described in the dissertation
+#Neural network described in the Appendix A
 
 class Connect4Zero:    
 
