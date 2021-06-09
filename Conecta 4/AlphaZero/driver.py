@@ -10,10 +10,6 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import random
 
-states_data = []
-distributions_data = []
-rewards_data = []
-
 '''
 Function to play the game between 2 agents
 def play_game(player1 : Agent, player2: Agent):
