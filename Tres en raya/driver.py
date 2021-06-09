@@ -2,10 +2,6 @@ from board import Game
 from agent import Agent
 from humanAgent import HumanAgent
 from randomAgent import RandomAgent
-
-
-from multiprocessing import Process
-
 from MCTS import MCTS
 from NeuralNetwork import Connect4Zero
 
@@ -13,10 +9,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import random
-
-states_data = []
-distributions_data = []
-rewards_data = []
   
 #Function to play a game between 2 AlphaZero's
 def self_play(model):
@@ -26,7 +18,6 @@ def self_play(model):
     #Then, we build the MCTS
     evaluation = model.predict([board.get_state()])
     mcts = MCTS(evaluation[0][0])
-    #mcts2 = MCTS(evaluation[0][0])
     
     states = []
     distributions = []
@@ -35,13 +26,6 @@ def self_play(model):
     finished = False
     draw = False
     while not finished and not draw:                
-        #The MCTS decides a movement and we store the data
-        #if board.current_player == 0:
-        #    action, state, mcts_distribution = mcts1.makeMove(board, model)
-        #    mcts2.update_board(board, action, model)
-        #else:
-        #    action, state, mcts_distribution = mcts2.makeMove(board, model)
-        #    mcts1.update_board(board, action, model)
         action, state, mcts_distribution = mcts.makeMove(board, model)
         states.append(state)
         distributions.append(mcts_distribution)
@@ -59,7 +43,6 @@ def self_play(model):
          
     #Update the rewards
     if finished:
-        #I think this is wrong and it's the opposite one
         print('PLAYER ', board.current_player, ' WINS')
         
         #If not draw, each state receives a +-1 reward depending on who has won
@@ -86,10 +69,6 @@ def print_history(history):
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
     plt.show()
-  
-    
-#t3 = batch size =  32, epoch = 8
-#t4 = batch size =  32, epoch = 4
     
 def main():
     #Create the neural network
@@ -128,17 +107,7 @@ def main():
         
         history = model.fit(x=np.array(states_training), y=[np.array(distributions_training), np.array(rewards_training)], batch_size = 32, epochs = 4)
         print_history(history)
-        builder.save_model(model, 'nn_weights_c3/t4-' + str(i) + '.h5')
-        
-        
-       
-'''
-def main(): 
-    player1 = HumanAgent()
-    #player2 = RandomAgent()
-    player2 = HumanAgent()
-    play_game(player1, player2)
-'''
+        builder.save_model(model, 'nn_weights_c3/t4-' + str(i) + '.h5') 
     
 if __name__ == "__main__":
     main()
