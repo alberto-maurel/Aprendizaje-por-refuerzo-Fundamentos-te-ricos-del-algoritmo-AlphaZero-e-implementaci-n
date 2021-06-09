@@ -5,9 +5,9 @@ import time
 
 NUM_ACTIONS = 9
 NUM_SIMULATIONS = 200
-C_PUCT = 1.0 #Find the original value
-eps = 0
-PROF = 0    #4
+C_PUCT = 1.0
+eps = 0   # 0 to play match games, 0.25 to train
+PROF = 0  # 0 to play match games, 9 to train
 
 DIR_ALPHA = 1.5
 
