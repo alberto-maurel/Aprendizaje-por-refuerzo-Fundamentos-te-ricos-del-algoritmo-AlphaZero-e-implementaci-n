@@ -2,10 +2,6 @@ from board import Game
 from agent import Agent
 from humanAgent import HumanAgent
 from randomAgent import RandomAgent
-
-
-from multiprocessing import Process
-
 from MCTS import MCTS
 from NeuralNetwork import Connect4Zero
 
@@ -73,13 +69,6 @@ def self_play(model):
     finished = False
     draw = False
     while not finished and not draw:                
-        #The MCTS decides a movement and we store the data
-        #if board.current_player == 0:
-        #    action, state, mcts_distribution = mcts1.makeMove(board, model)
-        #    mcts2.update_board(board, action, model)
-        #else:
-        #    action, state, mcts_distribution = mcts2.makeMove(board, model)
-        #    mcts1.update_board(board, action, model)
         action, state, mcts_distribution = mcts.makeMove(board, model)
         states.append(state)
         distributions.append(mcts_distribution)
@@ -97,9 +86,6 @@ def self_play(model):
          
     #Update the rewards
     if finished:
-        #I think this is wrong and it's the opposite one
-        print('PLAYER ', board.current_player, ' WINS')
-        
         #If not draw, each state receives a +-1 reward depending on who has won
         for i in range(0, len(states)):
             if i % 2 == len(states) % 2:
@@ -130,18 +116,18 @@ def main():
     builder = Connect4Zero()
      
     #Building a model from scratch
-    #model = builder.build()
-    #builder.save_model(model, 'nn_weights/d3-0.h5')
+    model = builder.build()
+    builder.save_model(model, 'nn_weights/d3-0.h5')
     
     #Loading a partially trained model
-    model = builder.load_model('nn_weights/d3-217.h5')
+    #model = builder.load_model('nn_weights/d3-217.h5')
     #model.summary()
     
     states_data = []
     distributions_data = []
     rewards_data = []
     
-    for i in range(218, 250):
+    for i in range(0, 250):
         states_data_tmp = []
         distributions_data_tmp = []
         rewards_data_tmp = []
@@ -163,16 +149,6 @@ def main():
         history = model.fit(x=np.array(states_training), y=[np.array(distributions_training), np.array(rewards_training)], batch_size = 32, epochs = 8)
         print_history(history)
         builder.save_model(model, 'nn_weights/d3-' + str(i) + '.h5')
-        
-        
-       
-'''
-def main(): 
-    player1 = HumanAgent()
-    #player2 = RandomAgent()
-    player2 = HumanAgent()
-    play_game(player1, player2)
-'''
     
 if __name__ == "__main__":
     main()
