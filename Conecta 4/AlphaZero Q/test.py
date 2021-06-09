@@ -91,7 +91,7 @@ def main():
         
         evaluation1 = model1.predict([board.get_state()]) 
         mcts1 = MCTS(evaluation1[0][0])
-        evaluation2 = model1.predict([board.get_state()]) 
+        evaluation2 = model2.predict([board.get_state()]) 
         mcts2 = MCTS(evaluation2[0][0])
         
         finished = False
